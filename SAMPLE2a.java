@@ -1,66 +1,56 @@
+// game of pontoon, try to get total card value of 21
 import java.util.*;
 import javax.swing.*;
-
-public class SAMPLE2a
-{
+public class SAMPLE2a  {
+    // store card values, update value to 0 when card is played
     int[] myCards = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
-    public void sampleMethod()
-    {
-        Random randomno = new Random();
 
-        int pick1, card1, pick2, card2, total;
-        boolean gameOver;
-        String response;
+    Random randomno = new Random();        // random number generator
+    int firstPick, firstCard, anotherPick, anotherCard, total;
+    String response = "Y";                 // Y/y for another card
 
-        pick1 = randomno.nextInt(12);
-        card1  = myCards[pick1];
-        myCards[pick1] = 0;
-        
-        total = card1;
-        System.out.println("card: " + card1);
-        System.out.println("total: " + total);
+    public void sampleMethod() {
+        // deal the first card
+        System.out.print("Deal first card: ");
+        firstPick = randomno.nextInt(12);         // pick position
+        firstCard  = myCards[firstPick];          // get card value
+        myCards[firstPick] = 0;                   // mark as chosen
+        total = firstCard;                        // update total
+        System.out.println(firstCard);            // tell player
+        System.out.println("total: " + total);    // card value, total
 
-        pick2 = randomno.nextInt(12);
-        while (myCards[pick2] == 0) {
-            pick2 = randomno.nextInt(12);
-        }
-        card2  = myCards[pick2];
-        myCards[pick2] = 0;
+        System.out.print("Deal another card: ");  // deal again
+        dealCard();                               // call method: deal
 
-        total = total + card2;
-        System.out.println("card: " + card2);
-        System.out.println("total: " + total);
-
-        gameOver = false;
-
-        while (gameOver == false) {
+        // loop until bust or pontoon or player quits
+        while ((total < 21) && (response.equals("Y"))) {
             response = JOptionPane.showInputDialog("Twist? (Y/N)");
-            while ( !(response.equals("Y")) && !(response.equals("N"))){
-                response = JOptionPane.showInputDialog("enter Y/N");
-            }
             if (response.equals("Y")) {
-                pick2 = randomno.nextInt(12);
-                while (myCards[pick2] == 0) {
-                    pick2 = randomno.nextInt(12);
-                }
-                card2  = myCards[pick2];
-                myCards[pick2] = 0;
-                total = total + card2;
-                System.out.println("card: " + card2);
-                System.out.println("total: " + total);
-
+                //deal again
+                System.out.print("Deal another card: ");
+                dealCard();
+                // check total to decide what happens next
                 if (total > 21) {
                     System.out.println("Bust!");
-                    gameOver = true;
                 }
-            }
-            else
-            {
-                gameOver = true;
-
+                if (total == 21) {
+                    System.out.println("Pontoon! " + total);
+                }
             }
         }
         System.out.println("Goodbye!");
     }
 
+    // method to deal another card
+    public void dealCard() {
+        anotherPick = randomno.nextInt(12);       // choose position
+        while (myCards[anotherPick] == 0) {       // already played?
+            anotherPick = randomno.nextInt(12);   // pick again
+        }
+        anotherCard  = myCards[anotherPick];      // get card value
+        myCards[anotherPick] = 0;                 // mark as played
+        total = total + anotherCard;              // update total
+        System.out.println("card: " + anotherCard);// display value
+        System.out.println("total: " + total);    // display total
+    }
 }
