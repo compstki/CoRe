@@ -48,7 +48,7 @@ public class SAMPLE2b  {
     // method to deal another card, message describe which deal
     public void dealCard(String message) {
         System.out.print(message);       // dealing message
-        pick = randomno.nextInt(12);     // choose card porition
+        pick = randomno.nextInt(12);     // choose card position
         while (myCards[pick] == 0) {     // check if already played
             pick = randomno.nextInt(12); // pick another position
         }
